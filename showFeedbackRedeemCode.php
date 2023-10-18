@@ -43,7 +43,7 @@ if( !empty( $_GET['gift_code']) )
 				<div class="card">
 					<img class="card-img-top w-100 d-block fit-cover" style="height: 200px;" src="1400x800.png">
 					<div class="card-body p-4">
-						<p class="text-primary card-text mb-0">Código</p>
+						<p class="text-primary card-text mb-0">Gracias por tu evaluacion, El siguiente codigo es valido para tu próxima visita</p>
 						<div class="row">
 							<div class="col-8 form-group">
 								<label>Código</label>
@@ -63,19 +63,16 @@ if( !empty( $_GET['gift_code']) )
 				</div>
 				<div class="card mt-3">
 					<div class="row  mt-3">
-						<div class="col-8">
+						<div class="col-12">
 							<div class="d-flex">
 								<img class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50" src="1400x800.png">
 								<div class="fw-bold mb-0">
 									<?php if(!empty( $_GET['gift_code'] ) && !empty( $feedback_response ) ):?>
-										<h2><?=$feedback_response->gift_product?></h2>
+										<h2>Gratis: <?=$feedback_response->gift_product?></h2>
 									<?php endif; ?>
 									<?=getReedemedLabel(empty($feedback_response) ? NULL : $feedback_response->redeemed_timestamp,7*60*60)?>
 								</div>
 							</div>
-						</div>
-						<div class="col-4">
-							<button type="button" class="btn btn-primary" id="redeem_btn">Canjear</button>
 						</div>
 					</div>
 				</div>
