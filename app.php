@@ -11,6 +11,7 @@ include_once( __DIR__.'/akou/src/Image.php' );
 include_once( __DIR__.'/SuperRest.php');
 include_once( __DIR__.'/schema.php');
 include_once( __DIR__.'/akou/src/Curl.php');
+include_once( __DIR__.'/config.php');
 
 use \akou\DBTable;
 use \akou\Utils;
@@ -58,37 +59,23 @@ class App
 			Utils::startsWith('192.168',$domain ) ||
 			in_array( $domain, $test_servers );
 
-		if( $is_test )
-		{
-				$__user		= 'root';
-				$__password	= 'asdf';
-				$__db		= '_registro_pos';
-				$__host		= '127.0.0.1';
-				$__port		= '3306';
 
-				app::$image_directory = '/var/www/html/PointOfSale/user_images';
-				app::$attachment_directory = '/var/www/html/PointOfSale/user_files';
-				app::$is_debug	= true;
-		}
-		else
-		{
-				Utils::$DEBUG_VIA_ERROR_LOG	= FALSE;
-				Utils::$LOG_LEVEL			= Utils::LOG_LEVEL_ERROR;
-				Utils::$DEBUG				= FALSE;
-				Utils::$DB_MAX_LOG_LEVEL	= Utils::LOG_LEVEL_ERROR;
-				app::$is_debug	= false;
+		Utils::$DEBUG_VIA_ERROR_LOG	= FALSE;
+		Utils::$LOG_LEVEL			= Utils::LOG_LEVEL_ERROR;
+		Utils::$DEBUG				= FALSE;
+		Utils::$DB_MAX_LOG_LEVEL	= Utils::LOG_LEVEL_ERROR;
+		app::$is_debug	= false;
 
-				$__user			= 'dbuser';
-				$__password		= 'Soluciones01';
-				$__db			= '_registro_pos';
-				$__host			= '127.0.0.1';
-				$__port			= '3306';
+		$__user			= \MYSQL_USER;
+		$__password		= \MYSQL_PASSWORD;
+		$__db			= \MYSQL_DATABASE;
+		$__host			= '127.0.0.1';
+		$__port			= '3306';
 
-				app::$attachment_directory = './user_files';
-				app::$endpoint = 'https://'.$_SERVER['SERVER_ADDR'].'/api';
-				app::$image_directory = './user_images';
-				app::$is_debug	= false;
-		}
+		app::$attachment_directory = './user_files';
+		app::$endpoint = 'https://'.$_SERVER['SERVER_ADDR'].'/api';
+		app::$image_directory = './user_images';
+		app::$is_debug	= false;
 
 
 		$mysqli_platform =new \mysqli($__host, $__user, $__password, $__db, $__port );
