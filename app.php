@@ -90,87 +90,11 @@ class App
 		$mysqli_platform->query("SET time_zone = '+0:00'");
 		$mysqli_platform->set_charset('utf8');
 
-		app::$platform_db_connection = $mysqli_platform;
+		DBTable::$connection= $mysqli_platform;
 
-		$sql_domain = 'SELECT * FROM domain WHERE domain = "'.$mysqli_platform->real_escape_string($domain).'" LIMIT 1';
-
-		if( $is_test )
-		{
-			// Extract the last number of the IP address
-			$last_number = strrchr($domain, '.');
-			// Remove the period from the last number
-			$last_number = substr($last_number, 1);
-			$sql_domain = 'SELECT * FROM domain WHERE store_id = "'.$mysqli_platform->real_escape_string( $last_number ).'" LIMIT 1';
-			//error_log( $sql_domain );
-		}
-
-		$row	= $mysqli_platform->query( $sql_domain );
-
-		if( !$row )
-		{
-			header("HTTP/1.0 404 Not Found");
-			echo'No se encontrol el dominio '.$domain;
-			die();
-		}
-		$domain = null;
-
-		if( !($domain= $row->fetch_object()) )
-		{
-			if( $is_test )
-			{
-				$domain = new \stdClass();
-				$domain->store_id = 94;
-			}
-			else
-			{
-				header("HTTP/1.0 404 Not Found");
-				echo'No se encontrol el dominio '.$domain;
-				die();
-
-			}
-		}
-
-		$store_result = app::$platform_db_connection->query('SELECT * FROM store WHERE id = "'.app::$platform_db_connection->real_escape_string( $domain->store_id ).'"');
-		$store = null;
-
-		if( !($store = $store_result->fetch_object()) )
-		{
-			header("HTTP/1.0 404 Not Found");
-			echo'No se encontrol el dominio '.$domain;
-			die();
-		}
-
-
-		$mysqli = null;
-
-		if( $is_test )
-		{
-			//error_log('connecting to database '.$store->db_name );
-			$mysqli	= new \mysqli('127.0.0.1', 'root', 'asdf', $store->db_name, $store->db_port);
-
-		}
-		else
-		{
-			$mysqli	= new \mysqli($store->db_server, $store->db_user, $store->db_password, $store->db_name, $store->db_port);
-		}
-
-		if( $mysqli->connect_errno )
-		{
-			header("HTTP/1.0 500 Internal Server Error");
-			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-			exit();
-		}
-
-		app::$store_db_connection = $mysqli;
-		app::$filename_prefix = $store->db_name;
+		app::$filename_prefix = 'POS_smiths';
 
 		date_default_timezone_set('UTC');
-
-		$mysqli->query("SET NAMES 'utf8';");
-		$mysqli->query("SET time_zone = '+0:00'");
-		$mysqli->set_charset('utf8');
-
-		DBTable::$connection	= $mysqli;
 	}
 
 	static function getPasswordHash( $password, $timestamp )
