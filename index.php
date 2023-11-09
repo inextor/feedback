@@ -29,6 +29,11 @@ function getIpAddress()
 	return $ip;
 }
 
+$test_path = '';
+
+if( $_SERVER['HTTP_CLIENT_IP'] == '127.0.0.1' )
+	$test_path = '/feedback'
+
 ?>
 <html>
 	<head>
@@ -65,34 +70,39 @@ function getIpAddress()
 
 
 					let params = {
-						 method: 'POST',
-						 headers: { },
-						 body: form_data,
+						method: 'POST',
+						headers: { },
+						body: form_data,
 					};
 
 					fetch( 'feedback_response.php', params )
 					.then((response)=>
 					{
-						if (response.status === 200) 
+						if (response.status === 200)
 						{
 							// Success!
 							return response.json();
-						} 
-						else 
+						}
+						else
 						{
-							 throw 'Ocurrio un error al guardar la informacion';
+							throw 'Ocurrio un error al guardar la informacion';
 						}
 					})
 					.then((response)=>
 					{
-						window.location.href = '/showFeedbackRedeemCode.php?gift_code='+reponse.gift_code;
+						let path = '';
+						if( window.location.hostname == '127.0.0.1' )
+							path = '/feedback';
+
+
+						window.location.href = path+'/showFeedbackRedeemCode.php?gift_code='+response.gift_code;
 					});
 				},true);
 			});
 
 			function sendForm(evt)
 			{
-		
+
 			}
 		</script>
 	</head>
@@ -186,7 +196,7 @@ function renderQuestion($feedback_question,$is_table)
 	}
 	elseif( $feedback_question->type == 'OPEN' )
 	{
-		 ?>
+		?>
 		<div>
 			<label>
 				<input type="text" class="form-control" name="question_<?=$feedback_question->id?>" value="">
