@@ -41,7 +41,7 @@ if( !empty( $_GET['gift_code']) )
 	<body class="body">
 		<div style="margin:auto auto;width:100%;max-width:960px;">
 				<div class="card">
-					<img class="card-img-top w-100 d-block fit-cover" style="height: 200px;" src="1400x800.png">
+				<img class="card-img-top w-100 d-block fit-cover" src="<?=$feedback_response->gift_product?>.jpg">
 					<div class="card-body p-4">
 						<p class="text-primary card-text mb-0">Gracias por tu evaluacion, El siguiente codigo es valido para tu próxima visita</p>
 						<div class="row">
